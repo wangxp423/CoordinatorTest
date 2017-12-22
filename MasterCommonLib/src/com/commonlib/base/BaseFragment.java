@@ -13,9 +13,6 @@ import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import java.lang.reflect.Field;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 /**
  * @类描述：Fragment基类
  * @创建人：Wangxiaopan
@@ -28,7 +25,6 @@ import butterknife.Unbinder;
 public abstract class BaseFragment extends RxFragment {
     protected final String TAG = this.getClass().getSimpleName();
     protected Context mContext = null;
-    private Unbinder unbinder;
     private boolean isFirstResume = true;
     private boolean isFirstVisible = true;
     private boolean isFirstInvisible = true;
@@ -57,7 +53,6 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        unbinder = ButterKnife.bind(this, view);
         initViews(view);
         initData();
     }
@@ -112,7 +107,6 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override

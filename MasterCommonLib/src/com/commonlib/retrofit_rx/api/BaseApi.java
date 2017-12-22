@@ -23,7 +23,7 @@ public abstract class BaseApi {
     /*是否显示加载框*/
     private boolean showProgress = true;
     /*是否需要缓存处理*/
-    private boolean cache = true;
+    private boolean cache = false;
     /*基础url*/
     private String baseUrl = "https://www.izaodao.com/Api/";
     /*方法-如果需要缓存必须设置这个参数；不需要不用設置*/

@@ -32,7 +32,7 @@ android {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
-
+    buildToolsVersion '26.0.2'
 }
 
 dependencies {
@@ -43,6 +43,7 @@ dependencies {
     compile androidDependencies.design
     compile libGlide
     compile libGreenDao
+    compile libGson
 //    compile okhttpDependencies.okhttp3
 //    compile okhttpDependencies.okio
 
@@ -54,8 +55,4 @@ dependencies {
     compile rxDependencies.rx_android
     compile rxDependencies.rxlifecycle
     compile rxDependencies.rxlifecycleComponents
-
-    compile butterKnifeDependencies.butterKnife
-    compile butterKnifeDependencies.butterKnifeAnnotationProcessor
-
 }

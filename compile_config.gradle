@@ -1,7 +1,7 @@
 ext {
     android = [
-            compileSdkVersion: 25,
-            buildToolsVersion: "25",
+            compileSdkVersion: 26,
+            buildToolsVersion: "26",
             minSdkVersion    : 14,
             targetSdkVersion : 25
     ]
@@ -82,4 +82,11 @@ ext {
 
     def greenDaoVersion = "3.2.0"
     libGreenDao = "org.greenrobot:greendao:${greenDaoVersion}"
+
+
+    def eventbusVersion = "3.0.0"
+    libEventBus = "org.greenrobot:eventbus:${eventbusVersion}"
+
+    def gsonVersion = "2.7"
+    libGson = "com.google.code.gson:gson:${gsonVersion}"
 }

@@ -12,8 +12,6 @@ import com.commomlib.R;
 import com.iwangfan.foundationlibary.utils.ActivityManagerUtils;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
-import butterknife.ButterKnife;
-
 /**
  * @类描述：activity基类
  * @创建人：Wangxiaopan
@@ -95,7 +93,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        ButterKnife.bind(this);
     }
 
     protected void setFullScreen() {

@@ -2,11 +2,18 @@ package com.commonlib.retrofit_rx.api;
 
 import com.commonlib.retrofit_rx.listener.HttpOnNextListener;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subscribers.ResourceSubscriber;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 
 /**
@@ -18,6 +25,8 @@ import retrofit2.Retrofit;
  * @修改备注：
  */
 public abstract class BaseApi {
+    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/*");
+    private static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("application/json; charset=utf-8");
     /*是否能取消加载框*/
     private boolean cancel = false;
     /*是否显示加载框*/
@@ -183,5 +192,28 @@ public abstract class BaseApi {
                 resourceSubscriber.onComplete();
             }
         }
+    }
+
+    public HashMap<String, RequestBody> getPartMap(HashMap<String, String> params) {
+        HashMap<String, RequestBody> partMap = new HashMap<>();
+        if (params != null && params.size() > 0) {
+            for (Map.Entry<String, String> iterable_element : params.entrySet()) {
+                RequestBody body = RequestBody.create(MEDIA_TYPE_MARKDOWN, iterable_element.getValue());
+                partMap.put(iterable_element.getKey(), body);
+            }
+        }
+        return partMap;
+    }
+
+    public List<MultipartBody.Part> getPartList(HashMap<String, File> filesMap) {
+        ArrayList<MultipartBody.Part> partList = new ArrayList<>();
+        if (filesMap != null && filesMap.size() > 0) {
+            for (Map.Entry<String, File> iterable_element : filesMap.entrySet()) {
+                RequestBody requestBody = RequestBody.create(MEDIA_TYPE_PNG, iterable_element.getValue());
+                MultipartBody.Part part = MultipartBody.Part.createFormData(iterable_element.getKey(), iterable_element.getValue().getName(), requestBody);
+                partList.add(part);
+            }
+        }
+        return partList;
     }
 }

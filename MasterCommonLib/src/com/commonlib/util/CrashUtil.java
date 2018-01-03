@@ -49,7 +49,7 @@ public class CrashUtil implements Thread.UncaughtExceptionHandler {
         mDefaultCrashHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
         mContext = context.getApplicationContext();
-        back_path = context.getCacheDir().getPath() + "/trainapp/log/";
+        back_path = context.getCacheDir().getPath() + "/crash/log/";
     }
 
     /**

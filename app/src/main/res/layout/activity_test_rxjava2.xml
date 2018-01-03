@@ -5,27 +5,43 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/btn_home_activity"
+        android:id="@+id/btn_test1"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
-        android:text="HomeActivity"
+        android:text="TestRxjava2-1"
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/btn_name_activity"
+        android:id="@+id/btn_test2"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
-        android:text="NameActivity -> LiveData"
+        android:text="TestRxjava2-2"
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/btn_rxjava2_activity"
+        android:id="@+id/btn_test3"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
-        android:text="TestRxjava2"
+        android:text="TestRxjava2-3"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_test4"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="TestRxjava2-Retrofit"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_test5"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="TestRxjava2-filter"
         android:textAllCaps="false" />
 
 </LinearLayout>

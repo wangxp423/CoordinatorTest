@@ -1,7 +1,12 @@
-package com.xp.coordinator.coordinatortest.mvp;
+package com.xp.coordinator.coordinatortest;
 
 import com.commonlib.retrofit_rx.api.HttpManagerApi;
 import com.commonlib.retrofit_rx.listener.HttpOnNextListener;
+import com.xp.coordinator.coordinatortest.livedata.api.NetService;
+import com.xp.coordinator.coordinatortest.livedata.bean.InfoBean;
+import com.xp.coordinator.coordinatortest.mvp.IHomeService;
+
+import io.reactivex.Observable;
 
 /**
  * @类描述：网络请求 工具类
@@ -17,5 +22,11 @@ public class HttpApi extends HttpManagerApi {
         setBaseUrl(IHomeService.baseUrl);
         IHomeService service = getRetrofit().create(IHomeService.class);
         doHttpDealDelay(tag, listener, service.getAndroidType(pageSize, pageNum), 3);
+    }
+
+    public Observable<InfoBean> getInfoBean() {
+        setBaseUrl("http://api.tianapi.com");
+        NetService service = getRetrofit().create(NetService.class);
+        return service.getInfo();
     }
 }

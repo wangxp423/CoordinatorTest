@@ -70,6 +70,27 @@ ext {
                                 butterKnifeAnnotationProcessor: "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
     ]
 
+    def lifecycleVersion = "1.0.0"
+    lifecycleDependencies = [ //lifecycyle livedata viewmodel
+                              runtime        : "android.arch.lifecycle:runtime:${lifecycleVersion}",
+                              compiler       : "android.arch.lifecycle:compiler:${lifecycleVersion}",
+                              common         : "android.arch.lifecycle:common-java8:${lifecycleVersion}",
+                              extensions     : "android.arch.lifecycle:extensions:${lifecycleVersion}",
+                              reactivestreams: "android.arch.lifecycle:reactivestreams:${lifecycleVersion}"
+    ]
+
+    def roomDatabaseVersion = "1.0.0"
+    roomDependencies = [ // room数据库
+                         roomRuntime : "android.arch.persistence.room:runtime:${roomDatabaseVersion}",
+                         roomCompiler: "android.arch.persistence.room:compiler:${roomDatabaseVersion}"
+    ]
+
+    def daggerVersion = "2.5"
+    daggerDependencies = [ // dagger 注解
+                           dagger        : "com.google.dagger:dagger:${daggerVersion}",
+                           daggerCompiler: "com.google.dagger:dagger-compiler:${daggerVersion}"
+    ]
+
     def okhttp3Version = "3.8.0"
     def okioVersion = "1.13.0"
     okhttpDependencies = [

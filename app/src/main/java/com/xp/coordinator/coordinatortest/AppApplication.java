@@ -4,7 +4,7 @@ import android.support.multidex.MultiDexApplication;
 
 import com.commonlib.retrofit_rx.RxRetrofitApp;
 import com.commonlib.util.CrashUtil;
-import com.xp.coordinator.coordinatortest.mvp.HttpApi;
+import com.xp.coordinator.coordinatortest.livedata.database.InfoDataBase;
 
 /**
  * @类描述：应用常量类
@@ -30,8 +30,11 @@ public class AppApplication extends MultiDexApplication {
         CrashUtil.getInstance().init(getApplicationContext());
     }
 
-    static HttpApi Api;
+    public InfoDataBase getDataBase() {
+        return InfoDataBase.getInstance(getApplicationContext());
+    }
 
+    static HttpApi Api;
     public HttpApi sharedHttpApi() {
         if (Api == null) {
             synchronized (this) {

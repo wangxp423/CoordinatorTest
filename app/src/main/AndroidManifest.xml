@@ -33,6 +33,12 @@
         <activity
             android:name=".mvp.HomeActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".livedata.NameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".rxjava2.TestRxjava2Activity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

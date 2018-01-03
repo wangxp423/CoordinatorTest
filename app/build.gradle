@@ -13,7 +13,12 @@ android {
 //        ndk {
 //            abiFilters 'armeabi', 'armeabi-v7a'
 //        }
-        javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+                arguments = ["room.schemaLocation":"$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -34,4 +39,13 @@ dependencies {
     compile project(':MasterCommonLib')
     compile butterKnifeDependencies.butterKnife
     annotationProcessor butterKnifeDependencies.butterKnifeAnnotationProcessor
+
+    implementation lifecycleDependencies.extensions
+    annotationProcessor lifecycleDependencies.compiler
+
+//    compile daggerDependencies.dagger
+//    annotationProcessor daggerDependencies.daggerCompiler
+
+    implementation roomDependencies.roomRuntime
+    annotationProcessor roomDependencies.roomCompiler
 }

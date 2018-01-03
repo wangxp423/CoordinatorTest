@@ -49,6 +49,7 @@ dependencies {
 
     compile retrofitDependencies.retorfit
     compile retrofitDependencies.adapterRxjava
+    compile retrofitDependencies.converterGson
     compile retrofitDependencies.logging
     compile retrofitDependencies.converterScalar
     compile rxDependencies.rx

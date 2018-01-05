@@ -1,47 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_test1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="TestRxjava2-1"
-        android:textAllCaps="false" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_test2"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="TestRxjava2-2"
-        android:textAllCaps="false" />
+        <Button
+            android:id="@+id/btn_test1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-1"
+            android:textAllCaps="false" />
 
-    <Button
-        android:id="@+id/btn_test3"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="TestRxjava2-3"
-        android:textAllCaps="false" />
+        <Button
+            android:id="@+id/btn_test2"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-2"
+            android:textAllCaps="false" />
 
-    <Button
-        android:id="@+id/btn_test4"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="TestRxjava2-Retrofit"
-        android:textAllCaps="false" />
+        <Button
+            android:id="@+id/btn_test3"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-3"
+            android:textAllCaps="false" />
 
-    <Button
-        android:id="@+id/btn_test5"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="TestRxjava2-filter"
-        android:textAllCaps="false" />
+        <Button
+            android:id="@+id/btn_test4"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-Retrofit"
+            android:textAllCaps="false" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_test5"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-filter"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_test6"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-ArrayList"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_test7"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-backpressure"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_test8"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-connat"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_test9"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-flatmap"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_test10"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-zip"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_test11"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-interval"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+
+</ScrollView>

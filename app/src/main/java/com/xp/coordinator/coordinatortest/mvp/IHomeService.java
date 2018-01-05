@@ -1,6 +1,9 @@
 package com.xp.coordinator.coordinatortest.mvp;
 
+import com.xp.coordinator.coordinatortest.mvp.entity.HomeAndroidEntity;
+
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -18,4 +21,7 @@ public interface IHomeService {
 
     @GET("{pageSize}/{pageNum}")
     Flowable<String> getAndroidType(@Path("pageSize") int pageSize, @Path("pageNum") int pageNum);
+
+    @GET("{pageSize}/{pageNum}")
+    Observable<HomeAndroidEntity> getHomeTypes(@Path("pageSize") int pageSize, @Path("pageNum") int pageNum);
 }

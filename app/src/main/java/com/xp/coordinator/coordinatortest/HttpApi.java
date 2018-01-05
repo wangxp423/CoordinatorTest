@@ -5,6 +5,7 @@ import com.commonlib.retrofit_rx.listener.HttpOnNextListener;
 import com.xp.coordinator.coordinatortest.livedata.api.NetService;
 import com.xp.coordinator.coordinatortest.livedata.bean.InfoBean;
 import com.xp.coordinator.coordinatortest.mvp.IHomeService;
+import com.xp.coordinator.coordinatortest.mvp.entity.HomeAndroidEntity;
 
 import io.reactivex.Observable;
 
@@ -28,5 +29,11 @@ public class HttpApi extends HttpManagerApi {
         setBaseUrl("http://api.tianapi.com");
         NetService service = getRetrofit().create(NetService.class);
         return service.getInfo();
+    }
+
+    public Observable<HomeAndroidEntity> getHomeTypes() {
+        setBaseUrl(IHomeService.baseUrl);
+        IHomeService service = getRetrofit().create(IHomeService.class);
+        return service.getHomeTypes(1, 5);
     }
 }

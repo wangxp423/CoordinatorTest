@@ -1,7 +1,5 @@
 package com.xp.coordinator.coordinatortest.livedata.api;
 
-import android.arch.lifecycle.LiveData;
-
 import com.xp.coordinator.coordinatortest.livedata.bean.InfoBean;
 import com.xp.coordinator.coordinatortest.livedata.bean.NewsBean;
 
@@ -35,5 +33,5 @@ public interface NetService {
     Flowable<InfoBean> getInfo1();
 
     @GET("/startup/?key=7fed97d2186ea83c78d3e4fd0b58ab56&num=5")
-    LiveData<InfoBean> getInfo2();
+    Observable<InfoBean> getInfo2();
 }

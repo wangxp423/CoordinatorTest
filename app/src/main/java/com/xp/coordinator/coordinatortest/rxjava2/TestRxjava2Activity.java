@@ -23,11 +23,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.BackpressureStrategy;
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
@@ -36,6 +40,8 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -44,6 +50,9 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.AsyncSubject;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.PublishSubject;
 
 /**
  * @类描述：应用常量类
@@ -77,6 +86,20 @@ public class TestRxjava2Activity extends BaseActivity implements OnClickListener
     Button btnTest10;
     @BindView(R.id.btn_test11)
     Button btnTest11;
+    @BindView(R.id.btn_test12)
+    Button btnTest12;
+    @BindView(R.id.btn_test13)
+    Button btnTest13;
+    @BindView(R.id.btn_test14)
+    Button btnTest14;
+    @BindView(R.id.btn_test15)
+    Button btnTest15;
+    @BindView(R.id.btn_test16)
+    Button btnTest16;
+    @BindView(R.id.btn_test17)
+    Button btnTest17;
+    @BindView(R.id.btn_test18)
+    Button btnTest18;
 
     @Override
     protected boolean toggleOverridePendingTransition() {
@@ -120,6 +143,13 @@ public class TestRxjava2Activity extends BaseActivity implements OnClickListener
         btnTest9.setOnClickListener(this);
         btnTest10.setOnClickListener(this);
         btnTest11.setOnClickListener(this);
+        btnTest12.setOnClickListener(this);
+        btnTest13.setOnClickListener(this);
+        btnTest14.setOnClickListener(this);
+        btnTest15.setOnClickListener(this);
+        btnTest16.setOnClickListener(this);
+        btnTest17.setOnClickListener(this);
+        btnTest18.setOnClickListener(this);
 
     }
 
@@ -163,6 +193,27 @@ public class TestRxjava2Activity extends BaseActivity implements OnClickListener
                 break;
             case R.id.btn_test11:
                 btnTestClickEvent11();
+                break;
+            case R.id.btn_test12:
+                btnTestClickEvent12();
+                break;
+            case R.id.btn_test13:
+                btnTestClickEvent13();
+                break;
+            case R.id.btn_test14:
+                btnTestClickEvent14();
+                break;
+            case R.id.btn_test15:
+                btnTestClickEvent15();
+                break;
+            case R.id.btn_test16:
+                btnTestClickEvent16();
+                break;
+            case R.id.btn_test17:
+                btnTestClickEvent17();
+                break;
+            case R.id.btn_test18:
+                btnTestClickEvent18();
                 break;
             default:
                 break;
@@ -541,7 +592,7 @@ public class TestRxjava2Activity extends BaseActivity implements OnClickListener
                 });
     }
 
-    //测试 flatMap 多个网络请求依次依赖
+    //测试 flatMap 多个网络请求依次依赖 将一个observable 转换成 一个或多个observable
     private void btnTestClickEvent9() {
         AppApplication.getInstance().sharedHttpApi().getInfoBean()
                 .subscribeOn(Schedulers.io())
@@ -614,9 +665,11 @@ public class TestRxjava2Activity extends BaseActivity implements OnClickListener
     }
 
     //测试 interval 心跳间隔任务 轮训
+    //timer 延迟执行
     private Disposable disposable11;
 
     private void btnTestClickEvent11() {
+        //如果两个同时执行， 先执行上面 后同步执行第二个，此时由于disposable11已经被重新赋值，第一个中的dispose()方法不能生效
         disposable11 = Flowable.interval(1, TimeUnit.SECONDS)
                 .doOnNext(new Consumer<Long>() {
                     @Override
@@ -632,6 +685,448 @@ public class TestRxjava2Activity extends BaseActivity implements OnClickListener
                         if (10 == aLong) disposable11.dispose();
                     }
                 });
+        LogUtils.d("Test", "timer.accept = ");
+        disposable11 = Flowable.timer(2, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        LogUtils.d("Test", "timer.accept = " + aLong);
+                    }
+                });
+    }
+
+    //测试 concatMap 将一个observable 转换成 一个或多个observable 但是他能控制 顺序1-2-3
+    private void btnTestClickEvent12() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(1);
+                e.onNext(2);
+                e.onNext(3);
+            }
+        }).concatMap(new Function<Integer, ObservableSource<String>>() {
+            @Override
+            public ObservableSource<String> apply(Integer integer) throws Exception {
+                List<String> list = new ArrayList<>();
+                for (int i = 0; i < 3; i++) {
+                    list.add("I am value " + integer);
+                }
+                int delayTime = (int) (1 + Math.random() * 10);
+                return Observable.fromIterable(list).delay(delayTime, TimeUnit.MILLISECONDS);
+            }
+        }).subscribeOn(Schedulers.newThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        LogUtils.d("Test", "accept = " + s);
+                    }
+                });
+    }
+
+    //测试 skip  跳过 多少个数目以后开始  take 接受多少个
+    private void btnTestClickEvent13() {
+        Observable.just(1, 2, 3, 4, 5)
+                .skip(3)
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        LogUtils.d("Test", "Observable.accept = " + integer);
+                    }
+                });
+        Flowable.fromArray(1, 2, 3, 4, 5)
+                .take(3)
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        LogUtils.d("Test", "Flowable.accept = " + integer);
+                    }
+                });
+    }
+
+    //TestRxjava2-single-distinct-buffer
+    private void btnTestClickEvent14() {
+        //single 只能接受一个参数
+        Single.just(new Random().nextInt())
+                .subscribe(new SingleObserver<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Integer integer) {
+                        LogUtils.d("Test", "Single.integer = " + integer);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+        Observable.just(1, 1, 1, 2, 2, 3, 3, 4)
+                .distinct()
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        LogUtils.d("Test", "distinct.integer = " + integer);
+                    }
+                });
+        List<Integer> testIntList = new ArrayList<>();
+        testIntList.add(1);
+        testIntList.add(1);
+        testIntList.add(1);
+        testIntList.add(2);
+        testIntList.add(2);
+        testIntList.add(3);
+        testIntList.add(3);
+        testIntList.add(4);
+        Observable.fromIterable(testIntList)
+                .distinct()
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        LogUtils.d("Test", "distinct.fromIterable.integer = " + integer);
+                    }
+                });
+        //将数据 分割成 长度为count
+        // 每组数据起头跨步为skip即 index(0)起步count一组  index(0+skip)起步count一组  index(0+skip+skip)起步count一组
+        //长度不能超过 数据长度
+        Observable.just(1, 2, 3, 4, 5, 6)
+                .buffer(3, 4)
+                .subscribe(new Consumer<List<Integer>>() {
+                    @Override
+                    public void accept(List<Integer> integers) throws Exception {
+                        LogUtils.d("Test", "buffer.integers = " + integers.size());
+                        for (Integer i : integers) {
+                            LogUtils.d("Test", "buffer.integer = " + i);
+                        }
+                    }
+                });
+        Observable.fromIterable(testIntList)
+                .buffer(3, 4)
+                .subscribe(new Consumer<List<Integer>>() {
+                    @Override
+                    public void accept(List<Integer> integers) throws Exception {
+                        LogUtils.d("Test", "buffer.fromIterable.integers = " + integers.size());
+                        for (Integer i : integers) {
+                            LogUtils.d("Test", "buffer.fromIterable = " + i);
+                        }
+                    }
+                });
+    }
+
+    //debounce-defer-last
+    private void btnTestClickEvent15() {
+        //debounce 过滤掉发射速度过快的问题
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(1);
+                Thread.sleep(400);
+                e.onNext(2);
+                Thread.sleep(505);
+                e.onNext(3);
+                Thread.sleep(100);
+                e.onNext(4);
+                Thread.sleep(605);
+                e.onNext(5);
+                Thread.sleep(510);
+                e.onNext(6);
+                Thread.sleep(300);
+            }
+        })
+                .debounce(500, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        LogUtils.d("Test", "debounce.integer = " + integer);
+                    }
+                });
+
+        //每次订阅都会创建一个Observable 跟这个Observable.just(1,2,3)执行一样
+        Observable<Integer> observable = Observable.defer(new Callable<ObservableSource<Integer>>() {
+            @Override
+            public ObservableSource<Integer> call() throws Exception {
+                return Observable.just(1, 2, 3);
+            }
+        });
+        observable.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                LogUtils.d("Test", "defer.onSubscribe");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                LogUtils.d("Test", "defer.onNext = " + integer);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.d("Test", "defer.onError");
+            }
+
+            @Override
+            public void onComplete() {
+                LogUtils.d("Test", "defer.onComplete");
+            }
+        });
+        //取出最后一个 last(参数) 参数为如果没有last的默认值
+        Observable.just(1, 2, 3)
+                .last(4)
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        LogUtils.d("Test", "last.integer = " + integer);
+                    }
+                });
+    }
+
+    //merge-reduce-scan
+    private void btnTestClickEvent16() {
+        //merge 将多个observable 合并起来 支持多个可变参数和迭代
+        List<Integer> testIntegers = new ArrayList<>();
+        testIntegers.add(4);
+        testIntegers.add(5);
+        testIntegers.add(6);
+        Observable.merge(Observable.just(1, 2, 3), Observable.fromIterable(testIntegers))
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        LogUtils.d("Test", "merge.integer = " + integer);
+                    }
+                });
+        //一次用一个方法处理一个值
+        Observable.just(1, 2, 3)
+                .reduce(new BiFunction<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer integer, Integer integer2) throws Exception {
+                        LogUtils.d("Test", "reduce.integer = " + integer + " integer2 = " + integer2);
+                        return integer + integer2;
+                    }
+                }).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                LogUtils.d("Test", "reduce.accept.integer = " + integer);
+            }
+        });
+        //和reduce一样 不过scan将过程中每一个结果输出
+        Observable.just(1, 2, 3)
+                .scan(new BiFunction<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer integer, Integer integer2) throws Exception {
+                        LogUtils.d("Test", "scan.integer = " + integer + " integer2 = " + integer2);
+                        return integer + integer2;
+                    }
+                }).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                LogUtils.d("Test", "scan.accept.integer = " + integer);
+            }
+        });
+    }
+
+    //PublishSubject-AsyncSubject-BehaviorSubject
+    private void btnTestClickEvent17() {
+        //publishSubject onNext会通知每个观察者
+        PublishSubject<Integer> publishSubject = PublishSubject.create();
+        publishSubject.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                LogUtils.d("Test", "First.observer.onSubscribe");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                LogUtils.d("Test", "First.observer.onNext = " + integer);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.d("Test", "First.observer.onError");
+            }
+
+            @Override
+            public void onComplete() {
+                LogUtils.d("Test", "First.observer.onComplete");
+            }
+        });
+        publishSubject.onNext(1);
+        publishSubject.onNext(2);
+        publishSubject.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                LogUtils.d("Test", "Second.observer.onSubscribe");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                LogUtils.d("Test", "Second.observer.onNext = " + integer);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.d("Test", "Second.observer.onError");
+            }
+
+            @Override
+            public void onComplete() {
+                LogUtils.d("Test", "Second.observer.onComplete");
+            }
+        });
+        publishSubject.onNext(3);
+        publishSubject.onNext(4);
+        publishSubject.onComplete();
+
+        //asyncSubject 在调用onComplete之前 除了subscrbe其他操作 都会被缓存，在调用onComplete之后 只有最后一个onNext会生效
+        AsyncSubject<Integer> asyncSubject = AsyncSubject.create();
+        asyncSubject.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                LogUtils.d("Test", "asyncSubject.First.observer.onSubscribe");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                LogUtils.d("Test", "asyncSubject.First.observer.onNext = " + integer);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.d("Test", "asyncSubject.First.observer.onError");
+            }
+
+            @Override
+            public void onComplete() {
+                LogUtils.d("Test", "asyncSubject.First.observer.onComplete");
+            }
+        });
+        asyncSubject.onNext(1);
+        asyncSubject.onNext(2);
+        asyncSubject.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                LogUtils.d("Test", "asyncSubject.Second.observer.onSubscribe");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                LogUtils.d("Test", "asyncSubject.Second.observer.onNext = " + integer);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.d("Test", "asyncSubject.Second.observer.onError");
+            }
+
+            @Override
+            public void onComplete() {
+                LogUtils.d("Test", "asyncSubject.Second.observer.onComplete");
+            }
+        });
+        asyncSubject.onNext(3);
+        asyncSubject.onNext(4);
+        asyncSubject.onComplete();
+
+        //behaviorSubject 的最后一次onNext会被缓存，然后在sub
+        BehaviorSubject<Integer> behaviorSubject = BehaviorSubject.create();
+        behaviorSubject.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                LogUtils.d("Test", "behaviorSubject.First.observer.onSubscribe");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                LogUtils.d("Test", "behaviorSubject.First.observer.onNext = " + integer);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.d("Test", "behaviorSubject.First.observer.onError");
+            }
+
+            @Override
+            public void onComplete() {
+                LogUtils.d("Test", "behaviorSubject.First.observer.onComplete");
+            }
+        });
+        behaviorSubject.onNext(1);
+        behaviorSubject.onNext(2);
+        behaviorSubject.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                LogUtils.d("Test", "behaviorSubject.Second.observer.onSubscribe");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                LogUtils.d("Test", "behaviorSubject.Second.observer.onNext = " + integer);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.d("Test", "behaviorSubject.Second.observer.onError");
+            }
+
+            @Override
+            public void onComplete() {
+                LogUtils.d("Test", "behaviorSubject.Second.observer.onComplete");
+            }
+        });
+        behaviorSubject.onNext(3);
+        behaviorSubject.onNext(4);
+        behaviorSubject.onComplete();
+    }
+
+    //window-Completable
+    private void btnTestClickEvent18() {
+        //window 按照时间划分窗口 将数据发送给不同的observable
+        Observable.interval(1, TimeUnit.SECONDS)
+                .take(15) //最多接受15个
+                .window(3, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Observable<Long>>() {
+                    @Override
+                    public void accept(Observable<Long> longObservable) throws Exception {
+                        LogUtils.d("Test", "longObservable.accept");
+                        longObservable.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Consumer<Long>() {
+                                    @Override
+                                    public void accept(Long aLong) throws Exception {
+                                        LogUtils.d("Test", "accept " + aLong);
+                                    }
+                                });
+                    }
+                });
+        //completable 只关心结果，也就是completable没有onNext，要么成功要么出错，不关心过程，在subscribe后某个时间点返回结果
+        Completable.timer(1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        LogUtils.d("Test", "Completable.onSubscribe");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LogUtils.d("Test", "Completable.onComplete");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtils.d("Test", "Completable.onError");
+                    }
+                });
+
+
     }
 
 }

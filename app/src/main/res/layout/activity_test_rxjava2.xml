@@ -93,7 +93,63 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="TestRxjava2-interval"
+            android:text="TestRxjava2-interval-timer"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_test12"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-concatMap"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_test13"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-skip-take"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_test14"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-single-distinct-buffer"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_test15"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-debounce-defer-last"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_test16"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-merge-reduce-scan"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_test17"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-PublishSubject-AsyncSubject-BehaviorSubject"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_test18"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="TestRxjava2-window-Completable"
             android:textAllCaps="false" />
 
     </LinearLayout>

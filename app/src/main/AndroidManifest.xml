@@ -39,6 +39,9 @@
         <activity
             android:name=".rxjava2.TestRxjava2Activity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".livedata.RxjavaLiveDateActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

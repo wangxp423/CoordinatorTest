@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.xp.coordinator.coordinatortest.livedata.NameActivity;
+import com.xp.coordinator.coordinatortest.livedata.RxjavaLiveDateActivity;
 import com.xp.coordinator.coordinatortest.mvp.HomeActivity;
 import com.xp.coordinator.coordinatortest.rxjava2.TestRxjava2Activity;
 
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btnNameActivity;
     @BindView(R.id.btn_rxjava2_activity)
     Button btnRxjavaActivity;
+    @BindView(R.id.btn_rxjava2_livedata)
+    Button btnRxjavaLivedata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnHomeActivity.setOnClickListener(this);
         btnNameActivity.setOnClickListener(this);
         btnRxjavaActivity.setOnClickListener(this);
+        btnRxjavaLivedata.setOnClickListener(this);
     }
 
     @Override
@@ -47,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_rxjava2_activity:
                 intent.setClass(this, TestRxjava2Activity.class);
+                break;
+            case R.id.btn_rxjava2_livedata:
+                intent.setClass(this, RxjavaLiveDateActivity.class);
                 break;
             default:
                 break;

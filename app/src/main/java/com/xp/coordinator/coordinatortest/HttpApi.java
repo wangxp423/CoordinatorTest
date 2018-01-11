@@ -31,6 +31,12 @@ public class HttpApi extends HttpManagerApi {
         return service.getInfo();
     }
 
+    public Observable<InfoBean> getListNews() {
+        setBaseUrl("http://api.tianapi.com");
+        NetService service = getRetrofit().create(NetService.class);
+        return service.getInfo2();
+    }
+
     public Observable<HomeAndroidEntity> getHomeTypes() {
         setBaseUrl(IHomeService.baseUrl);
         IHomeService service = getRetrofit().create(IHomeService.class);

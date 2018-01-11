@@ -1,5 +1,7 @@
 package com.xp.coordinator.coordinatortest.livedata.bean;
 
+import android.arch.lifecycle.LiveData;
+
 import java.util.List;
 
 /**
@@ -11,7 +13,7 @@ import java.util.List;
  * @修改备注：
  */
 
-public class InfoBean {
+public class InfoBean extends LiveData<List<NewsBean>> {
     /**
      * code : 200
      * msg : success
@@ -45,6 +47,4 @@ public class InfoBean {
     public void setNewslist(List<NewsBean> newslist) {
         this.newslist = newslist;
     }
-
-
 }

@@ -24,4 +24,7 @@ public interface IHomeService {
 
     @GET("{pageSize}/{pageNum}")
     Observable<HomeAndroidEntity> getHomeTypes(@Path("pageSize") int pageSize, @Path("pageNum") int pageNum);
+
+    @GET("{pageSize}/{pageNum}")
+    Flowable<HomeAndroidEntity> getHomeTypesData(@Path("pageSize") int pageSize, @Path("pageNum") int pageNum);
 }

@@ -34,7 +34,7 @@ public class EnhancedCacheInterceptor implements Interceptor {
         Charset charset = Charset.forName("UTF-8");
         StringBuilder sb = new StringBuilder();
         sb.append(url);
-        LogUtils.d("Test", "request.Method = " + request.method());
+        LogUtils.d("RxRetrofit", "request.Method = " + request.method());
         if (request.method().equals("POST")) {
             MediaType contentType = requestBody.contentType();
             if (contentType != null) {
@@ -49,7 +49,7 @@ public class EnhancedCacheInterceptor implements Interceptor {
             sb.append(buffer.readString(charset));
             buffer.close();
         }
-        LogUtils.d("Test", "url = " + sb.toString());
+        LogUtils.d("RxRetrofit", "url = " + sb.toString());
         ResponseBody responseBody = response.body();
         MediaType contentType = responseBody.contentType();
 
@@ -63,7 +63,7 @@ public class EnhancedCacheInterceptor implements Interceptor {
         String key = sb.toString();
         //服务器返回的json原始数据
         String json = buffer.clone().readString(charset);
-        LogUtils.d("Test", "put cache-> key:" + key + "-> json:" + json);
+        LogUtils.d("RxRetrofit", "put cache-> key:" + key + "-> json:" + json);
         return chain.proceed(request);
     }
 }

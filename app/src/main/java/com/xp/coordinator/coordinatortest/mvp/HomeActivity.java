@@ -91,7 +91,9 @@ public class HomeActivity extends MvpActivity<HomePresenter, HomeModel> implemen
     }
 
     private void requestHomeData() {
-        mPresenter.requestData(PAGE_NUM, PAGE_SIZE);
+        mPresenter.requestData(PAGE_SIZE, PAGE_NUM); //自己封装的 这个慢 是因为加了3s延迟
+//        mPresenter.requestDataObserver(PAGE_SIZE,PAGE_NUM); //普通observable
+//        mPresenter.requestDataFlowable(PAGE_SIZE,PAGE_NUM); //自己稍微封装的
     }
 
     @Override

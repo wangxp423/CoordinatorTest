@@ -78,7 +78,7 @@ public class HttpManager {
         if (RxRetrofitApp.isDebug()) {
             builder.addInterceptor(getHttpLoggingInterceptor());
         }
-        //这里是连接器缓存，暂时不用(用数据库缓存)
+        //这里是连接器缓存(不能缓存post)，暂时不用(用数据库缓存)
 //        CacheInterceptor cacheInterceptor = new CacheInterceptor();
 //        builder.cache(cacheInterceptor.getCachePath()).addNetworkInterceptor(cacheInterceptor);
 //        builder.addInterceptor(new EnhancedCacheInterceptor());

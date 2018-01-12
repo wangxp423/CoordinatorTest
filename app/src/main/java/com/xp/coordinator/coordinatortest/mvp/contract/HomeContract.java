@@ -8,6 +8,9 @@ import com.xp.coordinator.coordinatortest.mvp.entity.HomeAndroidEntity;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
+
 /**
  * @类描述：首页数据 关联类
  * @创建人：Wangxiaopan
@@ -23,7 +26,11 @@ public interface HomeContract {
     }
 
     interface IHomeModel extends BaseModel {
-        void requestData(int pageNum, int pageSize, HttpOnNextListener listener);
+        void requestData(int pageSize, int pageNum, HttpOnNextListener listener);
+
+        Observable<HomeAndroidEntity> requestDataObserver(int pageSize, int pageNum);
+
+        Flowable<HomeAndroidEntity> requestDataFlowable(int pageSize, int pageNum);
     }
 
     abstract class IHomePresenter extends BasePresenter<IHomeView, IHomeModel> {

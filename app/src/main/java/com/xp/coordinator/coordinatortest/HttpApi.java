@@ -7,6 +7,7 @@ import com.xp.coordinator.coordinatortest.livedata.bean.InfoBean;
 import com.xp.coordinator.coordinatortest.mvp.IHomeService;
 import com.xp.coordinator.coordinatortest.mvp.entity.HomeAndroidEntity;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
 /**
@@ -23,6 +24,18 @@ public class HttpApi extends HttpManagerApi {
         setBaseUrl(IHomeService.baseUrl);
         IHomeService service = getRetrofit().create(IHomeService.class);
         doHttpDealDelay(tag, listener, service.getAndroidType(pageSize, pageNum), 3);
+    }
+
+    public Observable<HomeAndroidEntity> getHomeDataObserver(int pageSize, int pageNum) {
+        setBaseUrl(IHomeService.baseUrl);
+        IHomeService service = getRetrofit().create(IHomeService.class);
+        return service.getHomeTypes(pageSize, pageNum);
+    }
+
+    public Flowable<HomeAndroidEntity> getHomeDataFlowable(int pageSize, int pageNum) {
+        setBaseUrl(IHomeService.baseUrl);
+        IHomeService service = getRetrofit().create(IHomeService.class);
+        return getFlowable(service.getHomeTypesData(pageSize, pageNum));
     }
 
     public Observable<InfoBean> getInfoBean() {
